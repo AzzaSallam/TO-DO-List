@@ -62,10 +62,11 @@ const TodoLayout = () => {
 
       {/* Input + Button */}
       <div className='flex items-center my-7 rounded-full bg-gray-100'>
-        <input ref={inputRef} className='flex-1 h-14 pl-6 pr-2 bg-transparent border-0 placeholder:text-slate-500 outline-none text-slate-800' placeholder='Add your task'/>
+        <input ref={inputRef} className='w-[80%] h-14 pl-6 pr-2 bg-transparent border-0 placeholder:text-slate-500 outline-none
+         text-slate-800' placeholder='Add your task'/>
         <button 
               onClick={addTask} 
-              className='bg-blue-700 hover:bg-blue-800  rounded-full border-none w-32 h-14 text-white text-lg 
+              className='bg-blue-700 hover:bg-blue-800  rounded-full border-none w-1/3 md:w-32 h-14 text-white md:text-lg 
               font-medium cursor-pointer outline-none'
         >
           ADD +

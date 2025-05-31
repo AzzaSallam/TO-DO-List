@@ -14,7 +14,7 @@ const TodoItem = ({text , id , isComplete , deleteItem , toggle }) => {
                 <ImRadioUnchecked color='#1447e6' size={23} />
 
             }
-            <p className={`text-slate-800 text-base decoration-slate-400 ${isComplete ? 'line-through' : ""}`}>{text}</p>
+            <p className={`text-slate-800 pr-1 wrap-anywhere text-base decoration-slate-400 ${isComplete ? 'line-through' : ""}`}>{text}</p>
         </div>
         <MdDelete color='#E52020' size={23} className='cursor-pointer' onClick={()=>{deleteItem(id)}}/>
         
