@@ -52,13 +52,15 @@ const TodoLayout = () => {
 
 
   return (
-    <div className=' place-self-center py-10 px-7 bg-white w-11/12 max-w-md rounded-xl min-h-[550px]'>
+    <div className='place-self-center py-10 px-5 sm:px-7 bg-white w-[95%] sm:w-11/12 max-w-md rounded-xl min-h-[550px] shadow-lg'>
 
-      <div className='flex mb-7 items-center text-blue-900 gap-2 font-semibold text-2xl'>
+      {/* Header */}
+      <div className='flex mb-7 items-center text-blue-900 gap-2 font-semibold text-xl sm:text-2xl'>
         <FcTodoList size={30} className='relative top-0.5'/>
         <h1>To-Do List</h1>
       </div>
 
+      {/* Input + Button */}
       <div className='flex items-center my-7 rounded-full bg-gray-100'>
         <input ref={inputRef} className='flex-1 h-14 pl-6 pr-2 bg-transparent border-0 placeholder:text-slate-500 outline-none text-slate-800' placeholder='Add your task'/>
         <button 
@@ -70,20 +72,22 @@ const TodoLayout = () => {
         </button>
       </div>
 
+      {/* Task Items */}
       <div>
-        {items.map((item , index)=> {
-            return <TodoItem key={index}  
-                            text={item.text}
-                             deleteItem={deleteItem} 
-                             id={item.id} 
-                             isComplete={item.isComplete}
-                             toggle = {markItem}
-                    />
-          }   
-        )}
+        {items.map((item, index) => (
+          <TodoItem 
+            key={index}
+            text={item.text}
+            deleteItem={deleteItem}
+            id={item.id}
+            isComplete={item.isComplete}
+            toggle={markItem}
+          />
+        ))}
       </div>
 
-    </div>
+  </div>
+
   )
 }
 
