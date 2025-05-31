@@ -1,0 +1,90 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { FcTodoList } from "react-icons/fc";
+import TodoItem from './TodoItem';
+
+
+const TodoLayout = () => {
+
+  const [items , setItems] = useState(localStorage.getItem("todos") ?
+    JSON.parse(localStorage.getItem("todos")) : []
+  );
+
+
+  const inputRef = useRef();
+
+  const addTask = ()=>{
+    const inputText = inputRef.current.value.trim();
+
+    if(inputText === ""){
+      return null;
+    }
+
+    const newItem = {
+      id : Date.now(),
+      text : inputText , 
+      isComplete : false ,
+    }
+    setItems((prev)=> [...prev , newItem]);
+    inputRef.current.value = "" ;
+  }
+
+  const deleteItem = (id)=>{
+    setItems((prevItems)=>{
+      return prevItems.filter((item)=>item.id !== id)
+    })
+  }
+
+ const markItem = (id)=>{
+  setItems((prevItems)=>{
+    return prevItems.map((todoItem)=>{
+      if(todoItem.id === id){
+        return {...todoItem , isComplete : !todoItem.isComplete}
+      }
+
+      return todoItem;
+    })
+  })
+ }
+
+  useEffect(()=>{
+    localStorage.setItem("todos" , JSON.stringify(items))
+  },[items])
+
+
+  return (
+    <div className=' place-self-center py-10 px-7 bg-white w-11/12 max-w-md rounded-xl min-h-[550px]'>
+
+      <div className='flex mb-7 items-center text-blue-900 gap-2 font-semibold text-2xl'>
+        <FcTodoList size={30} className='relative top-0.5'/>
+        <h1>To-Do List</h1>
+      </div>
+
+      <div className='flex items-center my-7 rounded-full bg-gray-100'>
+        <input ref={inputRef} className='flex-1 h-14 pl-6 pr-2 bg-transparent border-0 placeholder:text-slate-500 outline-none text-slate-800' placeholder='Add your task'/>
+        <button 
+              onClick={addTask} 
+              className='bg-blue-700 hover:bg-blue-800  rounded-full border-none w-32 h-14 text-white text-lg 
+              font-medium cursor-pointer outline-none'
+        >
+          ADD +
+        </button>
+      </div>
+
+      <div>
+        {items.map((item , index)=> {
+            return <TodoItem key={index}  
+                            text={item.text}
+                             deleteItem={deleteItem} 
+                             id={item.id} 
+                             isComplete={item.isComplete}
+                             toggle = {markItem}
+                    />
+          }   
+        )}
+      </div>
+
+    </div>
+  )
+}
+
+export default TodoLayout;
