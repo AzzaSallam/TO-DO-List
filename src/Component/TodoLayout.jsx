@@ -9,30 +9,61 @@ const TodoLayout = () => {
     JSON.parse(localStorage.getItem("todos")) : []
   );
 
+  const [isEditing , setIsEditing] = useState(false);
+  const [editingId , setEditingId] = useState(null);
+
 
   const inputRef = useRef();
 
   const addTask = ()=>{
     const inputText = inputRef.current.value.trim();
 
-    if(inputText === ""){
-      return null;
+    if(inputText === "") return ;
+    
+    //edit checking
+    if(isEditing){
+       setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === editingId ? { ...item, text: inputText } : item
+      )
+    );
+    setIsEditing(false);
+    setEditingId(null);
+
+    } else {
+
+      const newItem = {
+        id : Date.now(),
+        text : inputText , 
+        isComplete : false ,
+      }
+      setItems((prev)=> [...prev , newItem]);
     }
 
-    const newItem = {
-      id : Date.now(),
-      text : inputText , 
-      isComplete : false ,
-    }
-    setItems((prev)=> [...prev , newItem]);
     inputRef.current.value = "" ;
   }
+
+
+  const updateItem =(id)=>{
+    const itemEdit = items.find((item)=> item.id === id);
+    if(!itemEdit) return ;
+
+    inputRef.current.value = itemEdit.text;
+    setIsEditing(true);
+    setEditingId(id);
+
+      setTimeout(() => {
+      inputRef.current.focus();
+    }, 0);
+  }
+
 
   const deleteItem = (id)=>{
     setItems((prevItems)=>{
       return prevItems.filter((item)=>item.id !== id)
     })
   }
+
 
  const markItem = (id)=>{
   setItems((prevItems)=>{
@@ -62,14 +93,16 @@ const TodoLayout = () => {
 
       {/* Input + Button */}
       <div className='flex items-center my-7 rounded-full bg-gray-100'>
-        <input ref={inputRef} className='w-[80%] h-14 pl-6 pr-2 bg-transparent border-0 placeholder:text-slate-500 outline-none
-         text-slate-800' placeholder='Add your task'/>
-        <button 
+        <input ref={inputRef} className={`w-[80%] h-14 pl-6 pr-2 bg-transparent rounded-full border-0
+               placeholder:text-slate-500  outline-none text-slate-800  `} 
+                placeholder='Add your task' 
+        />
+        <button
               onClick={addTask} 
               className='bg-blue-700 hover:bg-blue-800  rounded-full border-none w-1/3 md:w-32 h-14 text-white md:text-lg 
               font-medium cursor-pointer outline-none'
         >
-          ADD +
+          {isEditing ? 'Update' : 'ADD +'}
         </button>
       </div>
 
@@ -83,6 +116,7 @@ const TodoLayout = () => {
             id={item.id}
             isComplete={item.isComplete}
             toggle={markItem}
+            editItem={updateItem}
           />
         ))}
       </div>
