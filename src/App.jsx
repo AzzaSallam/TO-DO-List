@@ -3,7 +3,7 @@ import TodoLayout from './Component/TodoLayout';
 
 const App = () => {
   return (
-    <div className=' bg-gray-100 grid py-9 min-h-screen'>
+    <div className=' bg-gray-100 flex justify-center items-center min-h-screen px-4 py-6'>
       <TodoLayout/>
     </div>
   )
